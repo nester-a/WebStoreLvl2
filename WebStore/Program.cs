@@ -1,12 +1,9 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
-using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
@@ -14,11 +11,11 @@ using WebStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Services
 // Регистрация сервисов
 var services = builder.Services;
 services.AddControllersWithViews(opt =>
 {
-    //opt.Conventions.Add(new TestConvention());
     opt.Conventions.Add(new AddAreasControllerRoute());
 });
 
@@ -80,17 +77,16 @@ services.ConfigureApplicationCookie(opt =>
 services.AddAuthorization(opt =>
 {
     opt.AddPolicy("AdminAuthorization", policy => policy.Requirements.Add(new AdminAuthorizationPolicy(Role.Adinistrators)));
-    //opt.AddPolicy("AdminAuthorizationPolicy", policy => policy.RequireRole(Role.Adinistrators));
 });
 
 services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
-//services.AddScoped<IProductData, InMemoryProductData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
 
-//services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
+
+#endregion
 
 var app = builder.Build();
 
@@ -119,23 +115,8 @@ app.MapGet("/throw", () =>
 
 app.MapGet("/greetings", () => app.Configuration["ServerGreetings"]);
 
-app.UseMiddleware<TestMiddleware>();
-
-//app.MapControllerRoute(
-//    name: "ActionRoute",
-//    pattern: "{controller}.{action}({a}, {b})");
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.UseEndpoints(endpoints =>
 {
-    //endpoints.MapControllerRoute(
-    //    name: "ActionRoute",
-    //    pattern: "{controller}.{action}({a}, {b})"
-    //);
-
     endpoints.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
