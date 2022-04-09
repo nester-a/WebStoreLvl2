@@ -5,9 +5,11 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.TestAPI;
 using WebStore.Services;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +85,8 @@ services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
+
+services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddAutoMapper(typeof(Program));
 

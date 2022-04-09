@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="WebStore.WebAPI.Clients\**" />
+    <EmbeddedResource Remove="WebStore.WebAPI.Clients\**" />
+    <None Remove="WebStore.WebAPI.Clients\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Data\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
   </ItemGroup>
