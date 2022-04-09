@@ -1,6 +1,6 @@
 ﻿using WebStore.Domain.Entities;
 
-namespace WebStore.Data;
+namespace WebStore.Domain.Data;
 
 public class TestData
 {

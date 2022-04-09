@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
-using WebStore.Data;
+using WebStore.Domain.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
 
@@ -15,7 +16,7 @@ public class DbInitializer : IDbInitializer
     private readonly ILogger<DbInitializer> _Logger;
 
     public DbInitializer(
-        WebStoreDB db, 
+        WebStoreDB db,
         UserManager<User> UserManager,
         RoleManager<Role> RoleManager,
         ILogger<DbInitializer> Logger)
@@ -32,7 +33,7 @@ public class DbInitializer : IDbInitializer
 
         var removed = await _db.Database.EnsureDeletedAsync(Cancel).ConfigureAwait(false);
 
-        if(removed)
+        if (removed)
             _Logger.LogInformation("БД удалена успешно.");
         else
             _Logger.LogInformation("Удаление БД не требуется (отсутствует на сервере).");
@@ -158,8 +159,8 @@ public class DbInitializer : IDbInitializer
             else
             {
                 var errors = creation_result.Errors.Select(e => e.Description);
-                _Logger.LogError("Учётная запись {0} не может быть создана. Ошибки: {1}", 
-                    User.Administrator, 
+                _Logger.LogError("Учётная запись {0} не может быть создана. Ошибки: {1}",
+                    User.Administrator,
                     string.Join(", ", errors));
 
                 throw new InvalidOperationException($"Невозможно создать пользователя {User.Administrator} по причине {string.Join(", ", errors)}");
