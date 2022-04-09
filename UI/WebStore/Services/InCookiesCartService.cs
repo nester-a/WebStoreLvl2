@@ -2,7 +2,7 @@
 
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Mapping;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.ViewModels;
 
 namespace WebStore.Services;
