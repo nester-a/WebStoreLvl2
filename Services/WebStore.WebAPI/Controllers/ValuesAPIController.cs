@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/values")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class ValuesAPIController : ControllerBase
     {
