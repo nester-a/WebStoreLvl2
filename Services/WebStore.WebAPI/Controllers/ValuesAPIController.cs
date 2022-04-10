@@ -6,15 +6,15 @@ namespace WebStore.WebAPI.Controllers
     [Route("api/values")]
     //[Route("api/[controller]")]
     [ApiController]
-    public class ValuesAPIController : ControllerBase
+    public class ValuesApiController : ControllerBase
     {
         static readonly Dictionary<int, string> values = Enumerable.Range(1, 10)
             .Select(x => (Id: x, Value: $"Value-{x}"))
             .ToDictionary(v => v.Id, v => v.Value);
 
-        private readonly ILogger<ValuesAPIController> logger;
+        private readonly ILogger<ValuesApiController> logger;
 
-        public ValuesAPIController(ILogger<ValuesAPIController> logger)
+        public ValuesApiController(ILogger<ValuesApiController> logger)
         {
             this.logger = logger;
         }
