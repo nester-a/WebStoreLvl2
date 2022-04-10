@@ -20,9 +20,11 @@ namespace WebStore.WebAPI.Clients.Base
 
             response.EnsureSuccessStatusCode();
 
-            if (response.StatusCode == HttpStatusCode.NoContent)
+            switch (response.StatusCode)
             {
-                return default;
+                case HttpStatusCode.NoContent:
+                case HttpStatusCode.NotFound:
+                    return default;
             }
 
             var result = await response
