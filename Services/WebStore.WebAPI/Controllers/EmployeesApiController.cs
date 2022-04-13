@@ -23,7 +23,10 @@ namespace WebStore.WebAPI.Controllers
             var employees = employeesData.GetAll();
 
             if (employees.Any())
+            {
+
                 return Ok(employees);
+            }
 
             return NoContent();
         }
