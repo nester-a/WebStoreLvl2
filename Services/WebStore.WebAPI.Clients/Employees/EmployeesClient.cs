@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using WebStore.Domain.Entities;
+using WebStore.DTO;
 using WebStore.Interfaces.Services;
 using WebStore.WebAPI.Clients.Base;
 
@@ -15,16 +16,16 @@ namespace WebStore.WebAPI.Clients.Employees
             this.logger = logger;
         }
 
-        public int Add(Employee employee)
+        public int Add(EmployeeDTO dto)
         {
-            var response = Post(Address, employee);
-            var addedEmployee = response.Content.ReadFromJsonAsync<Employee>().Result;
+            var response = Post(Address, dto);
+            var addedEmployee = response.Content.ReadFromJsonAsync<EmployeeDTO>().Result;
 
             if(addedEmployee is null)
                 return -1;
 
             var id = addedEmployee.Id;
-            employee.Id = id;
+            dto.Id = id;
 
             return id;
         }
@@ -36,9 +37,9 @@ namespace WebStore.WebAPI.Clients.Employees
             return result;
         }
 
-        public bool Edit(Employee employee)
+        public bool Edit(EmployeeDTO dto)
         {
-            var response = Put(Address, employee);
+            var response = Put(Address, dto);
             var result = response.EnsureSuccessStatusCode()
                 .Content
                 .ReadFromJsonAsync<bool>()
@@ -47,16 +48,16 @@ namespace WebStore.WebAPI.Clients.Employees
             return result;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<EmployeeDTO> GetAll()
         {
-            var employees = Get<IEnumerable<Employee>>(Address);
-            return employees ?? Enumerable.Empty<Employee>();
+            var employeesDTO = Get<IEnumerable<EmployeeDTO>>(Address);
+            return employeesDTO ?? Enumerable.Empty<EmployeeDTO>();
         }
 
-        public Employee? GetById(int id)
+        public EmployeeDTO? GetById(int id)
         {
-            var employee = Get<Employee>($"{Address}/{id}");
-            return employee;
+            var employeeDTO = Get<EmployeeDTO>($"{Address}/{id}");
+            return employeeDTO;
         }
     }
 }
