@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
+using WebStore.DTO;
 using WebStore.Interfaces.Services;
+using WebStore.Mappers;
 
 namespace WebStore.WebAPI.Controllers
 {
@@ -24,8 +26,8 @@ namespace WebStore.WebAPI.Controllers
 
             if (employees.Any())
             {
-
-                return Ok(employees);
+                var dtoEmployees = employees.Select(x => EmployeeMapper.EntityToDTO(x)).ToList();
+                return Ok(dtoEmployees);
             }
 
             return NoContent();
@@ -38,19 +40,22 @@ namespace WebStore.WebAPI.Controllers
             if (employee is null)
                 return NoContent();
 
-            return Ok(employee);
+            var dto = EmployeeMapper.EntityToDTO(employee);
+            return Ok(dto);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Employee employee)
+        public IActionResult Add([FromBody] EmployeeDTO dto)
         {
+            var employee = EmployeeMapper.DTOToEntity(dto);
             var id = employeesData.Add(employee);
-            return CreatedAtAction(nameof(GetById), new { Id = id }, employee);
+            return CreatedAtAction(nameof(GetById), new { Id = id }, dto);
         }
 
         [HttpPut]
-        public IActionResult Edit(Employee employee)
+        public IActionResult Edit(EmployeeDTO dto)
         {
+            var employee = EmployeeMapper.DTOToEntity(dto);
             var result = employeesData.Edit(employee);
             return Ok(result);
         }

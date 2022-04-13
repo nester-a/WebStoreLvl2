@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WebStore.Domain.Entities;
 using WebStore.DTO;
 using WebStore.ViewModels;
 
@@ -21,6 +22,24 @@ namespace WebStore.Mappers
 
             var dto = mapper.Map<EmployeeDTO>(model);
             return dto;
+        }
+
+        public static EmployeeDTO EntityToDTO(Employee employee)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>());
+            var mapper = new Mapper(config);
+
+            var dto = mapper.Map<EmployeeDTO>(employee);
+            return dto;
+        }
+
+        public static Employee DTOToEntity(EmployeeDTO dto)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDTO, Employee>());
+            var mapper = new Mapper(config);
+
+            var employee = mapper.Map<Employee>(dto);
+            return employee;
         }
     }
 }
