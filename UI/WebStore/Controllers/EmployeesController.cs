@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
+using WebStore.Mappers;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers;
@@ -11,10 +12,10 @@ namespace WebStore.Controllers;
 [Authorize]
 public class EmployeesController : Controller
 {
-    private readonly IEmployeesData _EmployeesData;
+    private readonly IEmployeesDTOData _EmployeesData;
     private readonly ILogger<EmployeesController> _Logger;
 
-    public EmployeesController(IEmployeesData EmployeesData, ILogger<EmployeesController> Logger)
+    public EmployeesController(IEmployeesDTOData EmployeesData, ILogger<EmployeesController> Logger)
     {
         _EmployeesData = EmployeesData;
         _Logger = Logger;
@@ -22,18 +23,20 @@ public class EmployeesController : Controller
 
     public IActionResult Index()
     {
-        var employees = _EmployeesData.GetAll();
+        var employeesDTO = _EmployeesData.GetAll();
+        var employees = employeesDTO.Select(x => EmployeeMapper.DTOToViewModel(x)).ToList();
         return View(employees);
     }
 
     //[Route("~/employees/info({Id:int})")]
     public IActionResult Details(int Id)
     {
-        var employee = _EmployeesData.GetById(Id);
+        var employeeDTO = _EmployeesData.GetById(Id);
 
-        if(employee == null)
+        if (employeeDTO == null)
             return NotFound();
 
+        var employee = EmployeeMapper.DTOToViewModel(employeeDTO);
         return View(employee);
     }
 
@@ -49,19 +52,11 @@ public class EmployeesController : Controller
         if (Id is not { } id)
             return View(new EmployeesViewModel());
 
-        var employee = _EmployeesData.GetById(id);
-        if (employee is null)
+        var employeeDTO = _EmployeesData.GetById(id);
+        if (employeeDTO is null)
             return NotFound();
 
-        var model = new EmployeesViewModel
-        {
-            Id = employee.Id,
-            LastName = employee.LastName,
-            FirstName = employee.FirstName,
-            Patronymic = employee.Patronymic,
-            ShortName = employee.ShortName,
-            Age = employee.Age,
-        };
+        var model = EmployeeMapper.DTOToViewModel(employeeDTO);
 
         return View(model);
     }
@@ -75,22 +70,15 @@ public class EmployeesController : Controller
 
         if (!ModelState.IsValid) return View(Model);
 
-        var employee = new Employee
-        {
-            Id = Model.Id,
-            LastName = Model.LastName,
-            FirstName = Model.FirstName,
-            Patronymic = Model.Patronymic,
-            Age = Model.Age,
-        };
+        var employeeDTO = EmployeeMapper.ViewModelToDTO(Model);
 
         if (Model.Id == 0)
         {
-            var id = _EmployeesData.Add(employee);
+            var id = _EmployeesData.Add(employeeDTO);
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        _EmployeesData.Edit(employee);
+        _EmployeesData.Edit(employeeDTO);
 
         return RedirectToAction(nameof(Index));
     }
@@ -101,19 +89,11 @@ public class EmployeesController : Controller
         if (id <= 0)
             return BadRequest();
 
-        var employee = _EmployeesData.GetById(id);
-        if (employee is null)
+        var employeeDTO = _EmployeesData.GetById(id);
+        if (employeeDTO is null)
             return NotFound();
 
-        var model = new EmployeesViewModel
-        {
-            Id = employee.Id,
-            LastName = employee.LastName,
-            FirstName = employee.FirstName,
-            Patronymic = employee.Patronymic,
-            ShortName = employee.ShortName,
-            Age = employee.Age,
-        };
+        var model = EmployeeMapper.DTOToViewModel(employeeDTO);
 
         return View(model);
     }

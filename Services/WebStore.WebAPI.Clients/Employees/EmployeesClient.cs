@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using WebStore.Domain.Entities;
 using WebStore.DTO;
 using WebStore.Interfaces.Services;
 using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Employees
 {
-    internal class EmployeesClient : BaseClient, IEmployeesData
+    public class EmployeesClient : BaseClient, IEmployeesDTOData
     {
         private readonly ILogger<EmployeesClient> logger;
 
