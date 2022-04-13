@@ -1,6 +1,6 @@
 ﻿using WebStore.DTO;
 
-namespace WebStore.Interfaces.Services
+namespace WebStore.Interfaces.Services.DTO
 {
     public interface IEmployeesDTOData
     {

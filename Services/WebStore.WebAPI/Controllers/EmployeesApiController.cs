@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebStore.Domain.Entities;
 using WebStore.DTO;
 using WebStore.Interfaces.Services;
 using WebStore.Mappers;

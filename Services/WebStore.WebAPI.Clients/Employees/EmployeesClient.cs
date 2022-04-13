@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using WebStore.DTO;
-using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.DTO;
 using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Employees
