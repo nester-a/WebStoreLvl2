@@ -7,7 +7,6 @@ using WebStore.Infrastructure.Conventions;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Services;
-using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
 using WebStore.WebAPI.Clients.Values;

@@ -49,7 +49,7 @@ namespace WebStore.WebAPI.Controllers
         {
             var employee = EmployeeMapper.DTOToEntity(dto);
             var id = employeesData.Add(employee);
-            return CreatedAtAction(nameof(GetById), new { Id = id }, dto);
+            return CreatedAtAction(nameof(GetById), new { Id = id }, EmployeeMapper.EntityToDTO(employee));
         }
 
         [HttpPut]
