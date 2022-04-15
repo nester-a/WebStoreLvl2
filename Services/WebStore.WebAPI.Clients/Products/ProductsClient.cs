@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Net.Http.Json;
 using WebStore.Domain;
 using WebStore.DTO;
 using WebStore.Interfaces.Services.DTO;
@@ -33,11 +34,15 @@ namespace WebStore.WebAPI.Clients.Products
             return dto;
         }
 
-        //ДОБАВИТЬ ФИЛЬТРАЦИЮ
         public IEnumerable<ProductDTO> GetProducts(ProductFilter? Filer = null)
         {
-            var dto = Get<IEnumerable<ProductDTO>>(Address);
-            return dto ?? Enumerable.Empty<ProductDTO>();
+            var dto = Post(Address, Filer ?? new());
+            var result = dto.EnsureSuccessStatusCode()
+                .Content
+                .ReadFromJsonAsync<IEnumerable<ProductDTO>>()
+                .Result;
+
+            return result!;
         }
 
         public SectionDTO? GetSectionById(int Id)
