@@ -10,8 +10,8 @@
 
         public string ImageUrl { get; set; } = null!;
 
-        public string? Brand { get; set; }
+        public BrandDTO? Brand { get; set; }
 
-        public string Section { get; set; } = null!;
+        public SectionDTO Section { get; set; } = null!;
     }
 }
