@@ -25,12 +25,12 @@ namespace WebStore.Mappers
             return dto;
         }
 
-        public static ProductDTO EntityToDTO(Product employee)
+        public static ProductDTO EntityToDTO(Product product)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>());
             var mapper = new Mapper(config);
 
-            var dto = mapper.Map<EmployeeDTO>(employee);
+            var dto = mapper.Map<ProductDTO>(product);
             return dto;
         }
 
