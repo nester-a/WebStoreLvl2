@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using WebStore.Domain.Entities;
 using WebStore.DTO;
 using WebStore.ViewModels;
-using static System.Collections.Specialized.BitVector32;
 
 namespace WebStore.Mappers
 {
-    public class SectionMapper
+    public static class SectionMapper
     {
         public static SectionViewModel DTOToViewModel(SectionDTO dto)
         {

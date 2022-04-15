@@ -27,7 +27,10 @@ namespace WebStore.Mappers
 
         public static ProductDTO EntityToDTO(Product product)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()
+            .ForMember("Brand", opt => opt.MapFrom(p => BrandMapper.EntityToDTO(p.Brand!)))
+            .ForMember("Section", opt => opt.MapFrom(p => SectionMapper.EntityToDTO(p.Section)))
+            );
             var mapper = new Mapper(config);
 
             var dto = mapper.Map<ProductDTO>(product);
