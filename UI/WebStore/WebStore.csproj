@@ -27,8 +27,8 @@
     <ProjectReference Include="..\..\Data\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\..\Common\WebStore.Domain\WebStore.Domain.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Interfaces\WebStore.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Services\WebStore.Mappers\WebStore.Mappers.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Services\WebStore.Services.csproj" />
-    <ProjectReference Include="..\..\Services\WebStore.Services\WebStore.WebAPI.Clients\WebStore.WebAPI.Clients.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.WebAPI.Clients\WebStore.WebAPI.Clients.csproj" />
   </ItemGroup>
 

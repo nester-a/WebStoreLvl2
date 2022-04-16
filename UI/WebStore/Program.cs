@@ -5,10 +5,13 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.DTO;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Services;
-using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
+using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Orders;
+using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,12 +84,14 @@ services.AddAuthorization(opt =>
     opt.AddPolicy("AdminAuthorization", policy => policy.Requirements.Add(new AdminAuthorizationPolicy(Role.Adinistrators)));
 });
 
-services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-services.AddScoped<IOrderService, SqlOrderService>();
+//services.AddScoped<IOrderService, SqlOrderService>();
 
 services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IEmployeesDTOData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IProductDTOData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IOrderService, OrderClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddAutoMapper(typeof(Program));
 

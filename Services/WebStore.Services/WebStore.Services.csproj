@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
+    <ProjectReference Include="..\WebStore.Mappers\WebStore.Mappers.csproj" />
   </ItemGroup>
 
 </Project>
