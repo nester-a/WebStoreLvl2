@@ -24,7 +24,6 @@ namespace WebStore.Mappers
             var dto = mapper.Map<ProductDTO>(model);
             return dto;
         }
-
         public static ProductDTO EntityToDTO(Product product)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()
@@ -36,7 +35,6 @@ namespace WebStore.Mappers
             var dto = mapper.Map<ProductDTO>(product);
             return dto;
         }
-
         public static Product DTOToEntity(ProductDTO dto)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<ProductDTO, Product>());
@@ -45,5 +43,26 @@ namespace WebStore.Mappers
             var employee = mapper.Map<Product>(dto);
             return employee;
         }
+
+        public static ProductViewModel EntityToViewModel(Product product)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductViewModel>()
+
+            .ForMember("Section", opt => opt.MapFrom(p => p.Section.Name))
+            .ForMember("Brand", opt => opt.MapFrom(p => p.Brand.Name)));
+            var mapper = new Mapper(config);
+
+            var model = mapper.Map<ProductViewModel>(product);
+            return model;
+        }
+        //public static Product ViewModelToEntity(ProductViewModel model)
+        //{
+        //    var config = new MapperConfiguration(cfg => cfg.CreateMap<ProductViewModel, Product>()
+        //    .ForMember("Brand", opt => opt.MapFrom())
+        //    .ForMember("Section", opt => opt.MapFrom()));
+        //    var mapper = new Mapper(config);
+        //    var entity = mapper.Map<Product>(model);
+        //    return entity;
+        //}
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.DTO;
 using WebStore.Interfaces.Services;
-using WebStore.Mappers;
 
 namespace WebStore.WebAPI.Controllers
 {
@@ -11,6 +10,7 @@ namespace WebStore.WebAPI.Controllers
     {
         private readonly IOrderService orderService;
         private readonly ILogger<OrdersApiController> logger;
+
 
         public OrdersApiController(IOrderService orderService, ILogger<OrdersApiController> logger)
         {
@@ -22,7 +22,7 @@ namespace WebStore.WebAPI.Controllers
         public async Task<IActionResult> GetUserOrdersAsync(string UserName)
         {
             var orders = await orderService.GetUserOrdersAsync(UserName);
-            var result = orders.Select(o => OrderMapper.EntityToDTO(o));
+            var result = orders.ToDTO();
             return Ok(result);
         }
         [HttpGet("{Id}")]
@@ -31,17 +31,14 @@ namespace WebStore.WebAPI.Controllers
             var order = await orderService.GetOrderByIdAsync(Id);
             if (order is null) return NotFound();
 
-            var result = OrderMapper.EntityToDTO(order);
+            var result = order.ToDTO();
             return Ok(result);
         }
         [HttpPost("{UserName}")]
         public async Task<IActionResult> CreateOrderAsync(string UserName, [FromBody] CreateOrderDTO model)
         {
-            var cart = OrderItemMapper.DTOToCartViewModel(model.Items);
-            var orderModel = model.Order;
-            var order = await orderService.CreateOrderAsync(UserName, cart, orderModel);
-
-            return CreatedAtAction(nameof(GetOrderByIdAsync), new { order.Id }, OrderMapper.EntityToDTO(order));
+            var order = await orderService.CreateOrderAsync(UserName, model.Items.ToCartView(), model.Order);
+            return Ok(order.ToDTO());
         }
     }
 }

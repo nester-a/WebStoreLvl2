@@ -18,7 +18,7 @@ namespace WebStore.WebAPI.Clients.Orders
         {
             var model = new CreateOrderDTO
             {
-                Items = OrderItemMapper.CartViewModelToDTO(Cart),
+                Items = Cart.ToDTO(),
                 Order = OrderModel,
             };
             var response = await PostAsync($"{Address}/{UserName}", model).ConfigureAwait(false);
@@ -29,19 +29,19 @@ namespace WebStore.WebAPI.Clients.Orders
                 .ReadFromJsonAsync<OrderDTO>(cancellationToken: Cancel)
                 .ConfigureAwait(false);
 
-            return OrderMapper.DTOToEntity(order!);
+            return order.FromDTO();
         }
 
         public async Task<Order?> GetOrderByIdAsync(int Id, CancellationToken Cancel = default)
         {
             var order = await GetAsync<OrderDTO>($"{Address}/{Id}").ConfigureAwait(false);
-            return OrderMapper.DTOToEntity(order!);
+            return order.FromDTO();
         }
 
         public async Task<IEnumerable<Order>> GetUserOrdersAsync(string UserName, CancellationToken Cancel = default)
         {
             var orders = await GetAsync<IEnumerable<OrderDTO>>($"{Address}/user/{UserName}").ConfigureAwait(false);
-            var result = orders!.Select(o => OrderMapper.DTOToEntity(o));
+            var result = orders.FromDTO();
             return result;
         }
     }

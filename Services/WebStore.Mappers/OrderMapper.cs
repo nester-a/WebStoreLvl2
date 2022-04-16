@@ -25,7 +25,8 @@ namespace WebStore.Mappers
         }
         public static OrderDTO EntityToDTO(Order order)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDTO>());
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDTO>()
+            .ForMember("Id", opt => opt.MapFrom(o => o.Id)));
             var mapper = new Mapper(config);
 
             var dto = mapper.Map<OrderDTO>(order);

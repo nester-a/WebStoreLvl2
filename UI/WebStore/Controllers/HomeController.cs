@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
-using WebStore.Services.Mapping;
-using WebStore.ViewModels;
+using WebStore.Mappers;
 
 namespace WebStore.Controllers;
 
@@ -16,7 +15,8 @@ public class HomeController : Controller
         var products = ProductData.GetProducts()
            .OrderBy(p => p.Order)
            .Take(6)
-           .ToView();
+           .Select(p => ProductMapper.EntityToViewModel(p));
+
 
         ViewBag.Products = products;
 

@@ -3,7 +3,6 @@ using WebStore.Domain;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.Services.DTO;
 using WebStore.Mappers;
-using WebStore.Services.Mapping;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers;
