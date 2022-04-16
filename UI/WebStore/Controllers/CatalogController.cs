@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.DTO;
+using WebStore.Mappers;
 using WebStore.Services.Mapping;
 using WebStore.ViewModels;
 
@@ -8,9 +10,9 @@ namespace WebStore.Controllers;
 
 public class CatalogController: Controller
 {
-    private readonly IProductData _ProductData;
+    private readonly IProductDTOData _ProductData;
 
-    public CatalogController(IProductData ProductData) => _ProductData = ProductData;
+    public CatalogController(IProductDTOData ProductData) => _ProductData = ProductData;
 
     public IActionResult Index(int? SectionId, int? BrandId)
     {
@@ -28,7 +30,7 @@ public class CatalogController: Controller
             BrandId = BrandId,
             Products = products
                .OrderBy(p => p.Order)
-               .ToView()!,
+               .Select(p => ProductMapper.DTOToViewModel(p)),
         });
     }
 
@@ -39,6 +41,6 @@ public class CatalogController: Controller
         if (product is null)
             return NotFound();
 
-        return View(product.ToView());
+        return View(ProductMapper.DTOToViewModel(product));
     }
 }

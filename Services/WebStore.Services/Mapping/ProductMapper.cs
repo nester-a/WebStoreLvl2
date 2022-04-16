@@ -3,7 +3,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Services.Mapping;
 
-public static class ProductMapper
+public static class ProductMapper1
 {
     public static ProductViewModel? ToView(this Product? product) => product is null
         ? null

@@ -18,7 +18,7 @@ namespace WebStore.WebAPI.Clients.Products
 
         public BrandDTO? GetBrandById(int Id)
         {
-            var dto = Get<BrandDTO>($"{Address}/{Id}");
+            var dto = Get<BrandDTO>($"{Address}/brands/{Id}");
             return dto;
         }
 
