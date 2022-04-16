@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\WebStore.DTO\WebStore.DTO.csproj" />
     <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
+    <ProjectReference Include="..\WebStore.Mappers\WebStore.Mappers.csproj" />
   </ItemGroup>
 
 </Project>
