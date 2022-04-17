@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.DTO;
 using WebStore.Mappers;
 
 namespace WebStore.Controllers;
@@ -10,12 +11,12 @@ public class HomeController : Controller
 
     public HomeController(IConfiguration Configuration) => _Configuration = Configuration;
 
-    public IActionResult Index([FromServices] IProductData ProductData)
+    public IActionResult Index([FromServices] IProductDTOData ProductData)
     {
         var products = ProductData.GetProducts()
            .OrderBy(p => p.Order)
            .Take(6)
-           .Select(p => ProductMapper.EntityToViewModel(p));
+           .Select(p => ProductMapper.DTOToViewModel(p));
 
 
         ViewBag.Products = products;

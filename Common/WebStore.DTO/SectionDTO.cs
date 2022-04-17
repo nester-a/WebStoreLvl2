@@ -7,6 +7,7 @@
         public string Name { get; set; } = string.Empty;
 
         public int Order { get; set; }
+        public int? ParentId { get; set; }
 
         public List<SectionDTO> ChildSections { get; set; } = new();
     }
