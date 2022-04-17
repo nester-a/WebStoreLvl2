@@ -3,4 +3,4 @@ using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.Interfaces.Services.Identity;
 
-public interface IRolesClient : IRoleStore<User> { }
+public interface IRolesClient : IRoleStore<Role> { }
