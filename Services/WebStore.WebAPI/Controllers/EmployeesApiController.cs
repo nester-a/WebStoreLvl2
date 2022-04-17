@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 using WebStore.Mappers;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route("api/employees")]
+    [Route(WebAPIAddresses.Employees)]
     [ApiController]
     public class EmployeesApiController : ControllerBase
     {

@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 using WebStore.Mappers;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route("api/products")]
+    [Route(WebAPIAddresses.Products)]
     [ApiController]
     public class ProductsApiController : ControllerBase
     {

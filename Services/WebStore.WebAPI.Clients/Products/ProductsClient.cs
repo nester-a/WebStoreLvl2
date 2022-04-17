@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using WebStore.Domain;
 using WebStore.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services.DTO;
 using WebStore.WebAPI.Clients.Base;
 
@@ -11,7 +12,7 @@ namespace WebStore.WebAPI.Clients.Products
     {
         private readonly ILogger<ProductsClient> logger;
 
-        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, "api/products")
+        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, WebAPIAddresses.Products)
         {
             this.logger = logger;
         }
