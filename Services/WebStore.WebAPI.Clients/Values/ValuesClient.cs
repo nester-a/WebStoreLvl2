@@ -7,7 +7,7 @@ namespace WebStore.WebAPI.Clients.Values
 {
     public class ValuesClient : BaseClient, IValuesService
     {
-        public ValuesClient(HttpClient client) : base(client, WebAPIAddresses.Values) { }
+        public ValuesClient(HttpClient client) : base(client, WebAPIAddresses.V1.Values) { }
         public void Add(string value)
         {
             var response = Client.PostAsJsonAsync(Address, value).Result;

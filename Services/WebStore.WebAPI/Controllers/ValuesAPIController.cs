@@ -3,7 +3,7 @@ using WebStore.Interfaces;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route(WebAPIAddresses.Values)]
+    [Route(WebAPIAddresses.V1.Values)]
     [ApiController]
     public class ValuesApiController : ControllerBase
     {

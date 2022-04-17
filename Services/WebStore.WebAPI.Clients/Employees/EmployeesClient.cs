@@ -11,7 +11,7 @@ namespace WebStore.WebAPI.Clients.Employees
     {
         private readonly ILogger<EmployeesClient> logger;
 
-        public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, WebAPIAddresses.Employees)
+        public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, WebAPIAddresses.V1.Employees)
         {
             this.logger = logger;
         }

@@ -1,14 +1,18 @@
 ﻿namespace WebStore.Interfaces;
 public static class WebAPIAddresses
 {
-    public const string Employees = "api/employees";
-    public const string Orders = "api/orders";
-    public const string Products = "api/products";
-    public const string Values = "api/values";
-
-    public static class Identity
+    public class V1
     {
-        public const string Users = "api/indentity/users";
-        public const string Roles = "api/indentity/roles";
+        public const string Employees = "api/v1/employees";
+        public const string Orders = "api/v1/orders";
+        public const string Products = "api/v1/products";
+        public const string Values = "api/v1/values";
+
+        public static class Identity
+        {
+            public const string Users = "api/v1/indentity/users";
+            public const string Roles = "api/v1/indentity/roles";
+        }
+
     }
 }

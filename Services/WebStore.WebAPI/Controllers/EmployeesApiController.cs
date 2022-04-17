@@ -6,7 +6,7 @@ using WebStore.Mappers;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route(WebAPIAddresses.Employees)]
+    [Route(WebAPIAddresses.V1.Employees)]
     [ApiController]
     public class EmployeesApiController : ControllerBase
     {

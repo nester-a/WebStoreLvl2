@@ -12,7 +12,7 @@ namespace WebStore.WebAPI.Clients.Products
     {
         private readonly ILogger<ProductsClient> logger;
 
-        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, WebAPIAddresses.Products)
+        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, WebAPIAddresses.V1.Products)
         {
             this.logger = logger;
         }
