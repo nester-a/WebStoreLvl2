@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
 using WebStore.Domain.Entities.Orders;
 using WebStore.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
-using WebStore.Mappers;
 using WebStore.ViewModels;
 using WebStore.WebAPI.Clients.Base;
 
@@ -10,7 +10,7 @@ namespace WebStore.WebAPI.Clients.Orders
 {
     public class OrderClient : BaseClient, IOrderService
     {
-        public OrderClient(HttpClient client) : base(client, "api/orders")
+        public OrderClient(HttpClient client) : base(client, WebAPIAddresses.V1.Orders)
         {
         }
 

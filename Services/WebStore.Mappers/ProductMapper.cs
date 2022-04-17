@@ -29,6 +29,7 @@ namespace WebStore.Mappers
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()
             .ForMember("Brand", opt => opt.MapFrom(p => BrandMapper.EntityToDTO(p.Brand!)))
             .ForMember("Section", opt => opt.MapFrom(p => SectionMapper.EntityToDTO(p.Section)))
+            //.ForMember("SectionId", opt => opt.MapFrom(p => p.SectionId))
             );
             var mapper = new Mapper(config);
 

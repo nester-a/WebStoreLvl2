@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.DTO;
 using WebStore.ViewModels;
 
 namespace WebStore.Components;
 
 public class SectionsViewComponent : ViewComponent
 {
-    private readonly IProductData _ProductData;
+    private readonly IProductDTOData _ProductData;
 
-    public SectionsViewComponent(IProductData ProductData) => _ProductData = ProductData;
+    public SectionsViewComponent(IProductDTOData ProductData) => _ProductData = ProductData;
 
     public IViewComponentResult Invoke()
     {

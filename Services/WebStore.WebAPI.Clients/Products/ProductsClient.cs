@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using WebStore.Domain;
 using WebStore.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services.DTO;
 using WebStore.WebAPI.Clients.Base;
 
@@ -11,7 +12,7 @@ namespace WebStore.WebAPI.Clients.Products
     {
         private readonly ILogger<ProductsClient> logger;
 
-        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, "api/products")
+        public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, WebAPIAddresses.V1.Products)
         {
             this.logger = logger;
         }
@@ -24,7 +25,7 @@ namespace WebStore.WebAPI.Clients.Products
 
         public IEnumerable<BrandDTO> GetBrands()
         {
-            var dto = Get<IEnumerable<BrandDTO>>(Address);
+            var dto = Get<IEnumerable<BrandDTO>>($"{Address}/brands");
             return dto ?? Enumerable.Empty<BrandDTO>();
         }
 
@@ -42,7 +43,7 @@ namespace WebStore.WebAPI.Clients.Products
                 .ReadFromJsonAsync<IEnumerable<ProductDTO>>()
                 .Result;
 
-            return result!;
+            return result;
         }
 
         public SectionDTO? GetSectionById(int Id)
@@ -53,7 +54,7 @@ namespace WebStore.WebAPI.Clients.Products
 
         public IEnumerable<SectionDTO> GetSections()
         {
-            var dto = Get<IEnumerable<SectionDTO>>(Address);
+            var dto = Get<IEnumerable<SectionDTO>>($"{Address}/sections");
             return dto ?? Enumerable.Empty<SectionDTO>();
         }
     }

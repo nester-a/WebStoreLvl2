@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
@@ -8,8 +6,8 @@ using WebStore.Interfaces.Services;
 using WebStore.Interfaces.Services.DTO;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Services;
-using WebStore.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Identity;
 using WebStore.WebAPI.Clients.Orders;
 using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
@@ -17,7 +15,6 @@ using WebStore.WebAPI.Clients.Values;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Services
-// Регистрация сервисов
 var services = builder.Services;
 services.AddControllersWithViews(opt =>
 {
@@ -25,26 +22,23 @@ services.AddControllersWithViews(opt =>
 });
 
 var configuration = builder.Configuration;
-var db_connection_string_name = configuration["Database"];
-var db_connection_string = configuration.GetConnectionString(db_connection_string_name);
 
-switch (db_connection_string_name)
-{
-    case "SqlServer":
-    case "DockerDB":
-        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(db_connection_string));
-        break;
-
-    case "Sqlite":
-        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-        break;
-}
-
-services.AddTransient<IDbInitializer, DbInitializer>();
-
-services.AddIdentity<User, Role>(/*opt => opt.*/)
-   .AddEntityFrameworkStores<WebStoreDB>()
+services.AddIdentity<User, Role>()
    .AddDefaultTokenProviders();
+
+services.AddHttpClient("WebStoreAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
+   .AddTypedClient<IUserStore<User>, UsersClient>()
+   .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+   .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+   .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+   .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+   .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+   .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+   .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+   .AddTypedClient<IRoleStore<Role>, RolesClient>()
+   //.AddPolicyHandler(GetRetryPolicy())
+   //.AddPolicyHandler(GetCircuitBreakerPolicy())
+   .SetHandlerLifetime(TimeSpan.FromMinutes(15));
 
 services.Configure<IdentityOptions>(opt =>
 {
@@ -84,14 +78,14 @@ services.AddAuthorization(opt =>
     opt.AddPolicy("AdminAuthorization", policy => policy.Requirements.Add(new AdminAuthorizationPolicy(Role.Adinistrators)));
 });
 
-services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-//services.AddScoped<IOrderService, SqlOrderService>();
 
-services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IEmployeesDTOData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IProductDTOData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IOrderService, OrderClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+services.AddHttpClient("WebStoreAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IEmployeesDTOData, EmployeesClient>()
+    .AddTypedClient<IValuesService, ValuesClient>()
+    .AddTypedClient<IProductDTOData, ProductsClient>()
+    .AddTypedClient<IOrderService, OrderClient>();
 
 services.AddAutoMapper(typeof(Program));
 
@@ -99,11 +93,6 @@ services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await db_initializer.InitializeAsync(RemoveBefore: false);
-}
 
 if (app.Environment.IsDevelopment())
 {
@@ -117,12 +106,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/throw", () =>
-{
-    throw new ApplicationException("Пример ошибки в приложении");
-});
-
-app.MapGet("/greetings", () => app.Configuration["ServerGreetings"]);
 
 app.UseEndpoints(endpoints =>
 {
