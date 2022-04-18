@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging.Console;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
@@ -13,6 +14,17 @@ using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
+//builder.Host.ConfigureLogging(
+//    log => log.ClearProviders()
+//    .AddConsole(opt => opt.FormatterName = "json")
+//    .AddDebug()
+//    .AddEventLog(opt =>
+//    {
+//        opt.LogName = "WebStore";
+//        opt.SourceName = "GB";
+//    })
+//    .AddFilter<ConsoleLoggerProvider>("Microsoft", LogLevel.Warning)
+//    );
 
 #region Services
 var services = builder.Services;
