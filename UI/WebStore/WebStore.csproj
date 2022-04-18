@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\WebStore.Logging\WebStore.Logging.csproj" />
     <ProjectReference Include="..\..\Common\WebStore.ViewModels\WebStore.ViewModels.csproj" />
     <ProjectReference Include="..\..\Data\WebStore.DAL.Sqlite\WebStore.DAL.Sqlite.csproj" />
     <ProjectReference Include="..\..\Data\WebStore.DAL\WebStore.DAL.csproj" />
