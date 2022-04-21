@@ -24,6 +24,14 @@ public class Log4NetLoggerProvider : ILoggerProvider
         }, configurationFile);
     }
 
+    //public ILogger CreateLogger(string Category) =>
+    //    loggers.GetOrAdd(Category, static (category, configuration_file) =>
+    //    {
+    //        var xml = new XmlDocument();
+    //        xml.Load(configuration_file);
+    //        return new Log4NetLogger(category, xml["log4net"]!);
+    //    }, configurationFile);
+
     public void Dispose()
     {
         loggers.Clear();
