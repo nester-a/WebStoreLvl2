@@ -26,11 +26,6 @@ public class Log4NetLoggerProvider : ILoggerProvider
 
     public void Dispose()
     {
-        var oldLoggers = loggers.Values.ToArray();
         loggers.Clear();
-        foreach (var log in oldLoggers)
-        {
-            log.Dispose();
-        }
     }
 }
