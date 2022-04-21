@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Console;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.AuthorizationPolicies;
 using WebStore.Infrastructure.Conventions;
@@ -27,6 +30,18 @@ builder.Logging.AddLog4Net();
 //    })
 //    .AddFilter<ConsoleLoggerProvider>("Microsoft", LogLevel.Warning)
 //    );
+builder.Host.UseSerilog((host, log) =>
+{
+    log.ReadFrom.Configuration(host.Configuration)
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(
+        outputTemplate: 
+        "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
+    .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyy-MM-ddTHH-mm-ss}].log")
+    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyy-MM-ddTHH-mm-ss}].log.json");
+});
 
 #region Services
 var services = builder.Services;
