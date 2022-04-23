@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels.Identity;
 
@@ -39,25 +40,29 @@ public class AccountController : Controller
             UserName = Model.UserName,
         };
 
-        var creation_result = await _UserManager.CreateAsync(user, Model.Password);
-        if (creation_result.Succeeded)
+        using (_Logger.BeginScope("Регистрация нового пользователя {0}", user.UserName))
         {
-            _Logger.LogInformation("Пользователь {0} зарегистрирован", Model.UserName);
-            //_Logger.LogInformation($"Пользователь {Model.UserName} зарегистрирован"); // так делать не надо!!!
 
-            await _SignInManager.SignInAsync(user, false);
-            return RedirectToAction("Index", "Home");
+            var creation_result = await _UserManager.CreateAsync(user, Model.Password);
+            if (creation_result.Succeeded)
+            {
+                _Logger.LogInformation("Пользователь {0} зарегистрирован", Model.UserName);
+                //_Logger.LogInformation($"Пользователь {Model.UserName} зарегистрирован"); // так делать не надо!!!
+
+                await _SignInManager.SignInAsync(user, false);
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in creation_result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            var error_info = string.Join(", ", creation_result.Errors.Select(e => e.Description));
+            _Logger.LogWarning("Ошибка при регистрации пользователя {0}: {1}",
+                Model.UserName,
+                error_info);
+
+            return View(Model);
         }
-
-        foreach (var error in creation_result.Errors)
-            ModelState.AddModelError("", error.Description);
-
-        var error_info = string.Join(", ", creation_result.Errors.Select(e => e.Description));
-        _Logger.LogWarning("Ошибка при регистрации пользователя {0}: {1}",
-            Model.UserName,
-            error_info);
-
-        return View(Model);
     }
 
     [AllowAnonymous]
