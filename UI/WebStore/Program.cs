@@ -40,8 +40,7 @@ builder.Host.UseSerilog((host, log) =>
         outputTemplate:
         "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
     .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyy-MM-ddTHH-mm-ss}].log")
-    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyy-MM-ddTHH-mm-ss}].log.json")
-    .WriteTo.Seq("");
+    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyy-MM-ddTHH-mm-ss}].log.json");
 });
 
 #region Services
